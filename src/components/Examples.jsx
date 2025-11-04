@@ -1,6 +1,8 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { FaArrowRight, FaMobileAlt, FaDesktop, FaShoppingCart, FaUtensils, FaSpa, FaBriefcase } from 'react-icons/fa';
+import { useLanguage } from '../context/LanguageContext';
+import translations from '../locales/translations';
 import '../styles/examples.css';
 
 const Examples = () => {
@@ -9,52 +11,20 @@ const Examples = () => {
     threshold: 0.1
   });
 
-  const examples = [
-    {
-      id: 1,
-      title: 'Restaurante Latino',
-      category: 'Gastronomía',
-      description: 'Menú digital, reservas online y galería de platos',
-      icon: <FaUtensils />,
-      color: '#ef4444',
-      features: ['Menú digital', 'Sistema de reservas', 'Galería de fotos'],
-      mockup: 'restaurant',
-      tags: ['Responsive', 'Reservas', 'Menú']
-    },
-    {
-      id: 2,
-      title: 'Spa & Wellness',
-      category: 'Belleza & Salud',
-      description: 'Catálogo de servicios, citas online y promociones',
-      icon: <FaSpa />,
-      color: '#8b5cf6',
-      features: ['Booking system', 'Catálogo de servicios', 'Blog de tips'],
-      mockup: 'spa',
-      tags: ['Booking', 'Galería', 'Blog']
-    },
-    {
-      id: 3,
-      title: 'Tienda Online',
-      category: 'E-commerce',
-      description: 'Catálogo de productos, carrito de compra y pagos',
-      icon: <FaShoppingCart />,
-      color: '#10b981',
-      features: ['Carrito de compra', 'Pagos online', 'Panel de admin'],
-      mockup: 'shop',
-      tags: ['E-commerce', 'Pagos', 'Inventario']
-    },
-    {
-      id: 4,
-      title: 'Servicios Profesionales',
-      category: 'Freelance/Empresa',
-      description: 'Portfolio, testimonios y formulario de contacto',
-      icon: <FaBriefcase />,
-      color: '#3b82f6',
-      features: ['Portfolio', 'Testimonios', 'Contacto'],
-      mockup: 'professional',
-      tags: ['Portfolio', 'Corporativo', 'SEO']
-    }
-  ];
+  const { language } = useLanguage();
+  const t = translations[language].examples;
+
+  const icons = [<FaUtensils />, <FaSpa />, <FaShoppingCart />, <FaBriefcase />];
+  const colors = ['#ef4444', '#8b5cf6', '#10b981', '#3b82f6'];
+  const mockups = ['restaurant', 'spa', 'shop', 'professional'];
+
+  const examples = t.categories.map((example, index) => ({
+    id: index + 1,
+    ...example,
+    icon: icons[index],
+    color: colors[index],
+    mockup: mockups[index]
+  }));
 
   return (
     <section id="examples" className="examples-section">
@@ -66,10 +36,9 @@ const Examples = () => {
           transition={{ duration: 0.8 }}
           className="examples-header"
         >
-          <h2>Ejemplos de lo que puedo crear para ti</h2>
+          <h2>{t.title}</h2>
           <p>
-            Cada proyecto es único y diseñado específicamente para tu negocio.
-            Aquí algunos ejemplos del tipo de páginas web que desarrollo:
+            {t.subtitle}
           </p>
         </motion.div>
 
@@ -123,7 +92,7 @@ const Examples = () => {
                 </div>
 
                 <div className="responsive-badge">
-                  <FaMobileAlt /> <FaDesktop /> Responsive
+                  <FaMobileAlt /> <FaDesktop /> {t.responsive}
                 </div>
               </div>
 
@@ -160,7 +129,7 @@ const Examples = () => {
                   style={{ background: example.color }}
                   onClick={() => window.location.href = '#contact'}
                 >
-                  Quiero algo así <FaArrowRight />
+                  {t.button} <FaArrowRight />
                 </motion.button>
               </div>
             </motion.div>
@@ -173,10 +142,9 @@ const Examples = () => {
           transition={{ delay: 0.8, duration: 0.8 }}
           className="examples-cta"
         >
-          <h3>¿Tienes una idea diferente?</h3>
+          <h3>{t.cta.title}</h3>
           <p>
-            Estos son solo ejemplos. Puedo crear cualquier tipo de página web que necesites.
-            Cuéntame tu idea y la hacemos realidad juntos.
+            {t.cta.subtitle}
           </p>
           <motion.a
             href="#contact"
@@ -184,7 +152,7 @@ const Examples = () => {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            Hablemos de tu proyecto
+            {t.cta.button}
           </motion.a>
         </motion.div>
       </div>

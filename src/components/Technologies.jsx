@@ -1,5 +1,7 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
+import { useLanguage } from '../context/LanguageContext';
+import translations from '../locales/translations';
 
 const Technologies = () => {
     const [ref, inView] = useInView({
@@ -7,80 +9,28 @@ const Technologies = () => {
         threshold: 0.1
     });
 
-    const technologies = [
-        {
-            name: 'React',
-            description: 'Interfaces modernas y rápidas',
-            logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg',
-            category: 'Frontend'
-        },
-        {
-            name: 'Tailwind CSS',
-            description: 'Diseño responsive y elegante',
-            logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg',
-            category: 'Styling'
-        },
-        {
-            name: 'Firebase',
-            description: 'Base de datos y hosting confiable',
-            logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/firebase/firebase-plain.svg',
-            category: 'Backend'
-        },
-        {
-            name: 'Vite',
-            description: 'Build tool ultrarrápido',
-            logo: 'https://vitejs.dev/logo.svg',
-            category: 'Build Tool'
-        },
-        {
-            name: 'Framer Motion',
-            description: 'Animaciones profesionales',
-            logo: 'https://cdn.worldvectorlogo.com/logos/framer-motion.svg',
-            category: 'Animations'
-        },
-        {
-            name: 'Stripe',
-            description: 'Pagos online seguros',
-            logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/stripe/stripe-original.svg',
-            category: 'Payments'
-        },
-        {
-            name: 'WordPress',
-            description: 'CMS para blogs y contenido',
-            logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/wordpress/wordpress-plain.svg',
-            category: 'CMS'
-        },
-        {
-            name: 'Shopify',
-            description: 'E-commerce profesional',
-            logo: 'https://cdn.worldvectorlogo.com/logos/shopify.svg',
-            category: 'E-commerce'
-        },
-        {
-            name: 'Claude AI',
-            description: 'Inteligencia Artificial para desarrollo',
-            logo: 'https://www.anthropic.com/_next/image?url=%2Fimages%2Ficons%2Fclaude-app-icon.png&w=96&q=75',
-            category: 'AI'
-        },
-        {
-            name: 'Figma',
-            description: 'Diseño y prototipado',
-            logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg',
-            category: 'Design'
-        },
-        {
-            name: 'Git',
-            description: 'Control de versiones',
-            logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg',
-            category: 'Version Control'
-        },
-        {
-            name: 'Netlify',
-            description: 'Hosting rápido y confiable',
-            logo: 'https://www.vectorlogo.zone/logos/netlify/netlify-icon.svg',
-            category: 'Hosting'
-        }
-    ];
+    const { language } = useLanguage();
+    const t = translations[language].technologies;
+
+    const techLogos = {
+        'React': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg',
+        'Tailwind CSS': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg',
+        'Firebase': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/firebase/firebase-plain.svg',
+        'Vite': 'https://vitejs.dev/logo.svg',
+        'Framer Motion': 'https://cdn.worldvectorlogo.com/logos/framer-motion.svg',
+        'Stripe': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/stripe/stripe-original.svg',
+        'WordPress': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/wordpress/wordpress-plain.svg',
+        'Shopify': 'https://cdn.worldvectorlogo.com/logos/shopify.svg',
+        'Claude AI': 'https://www.anthropic.com/_next/image?url=%2Fimages%2Ficons%2Fclaude-app-icon.png&w=96&q=75',
+        'Figma': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg',
+        'Git': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg',
+        'Netlify': 'https://www.vectorlogo.zone/logos/netlify/netlify-icon.svg'
+    };
+
+    const technologies = t.items.map(item => ({
+        ...item,
+        logo: techLogos[item.name] || ''
+    }));
 
     return (
         <section id="technologies" style={{ background: 'var(--white)', padding: '5rem 2rem' }}>
@@ -92,10 +42,9 @@ const Technologies = () => {
                     transition={{ duration: 0.8 }}
                     style={{ textAlign: 'center', marginBottom: '4rem' }}
                 >
-                    <h2>Tecnologías modernas</h2>
+                    <h2>{t.title}</h2>
                     <p style={{ fontSize: '1.2rem', color: 'var(--gray)', maxWidth: '700px', margin: '0 auto' }}>
-                        Uso las mejores herramientas del mercado para crear páginas web rápidas,
-                        seguras y profesionales. Incluyendo Inteligencia Artificial para optimizar el desarrollo.
+                        {t.subtitle}
                     </p>
                 </motion.div>
 
@@ -223,13 +172,10 @@ const Technologies = () => {
                     }}
                 >
                     <h3 style={{ color: 'white', marginBottom: '1rem' }}>
-                        🤖 Potenciado con Inteligencia Artificial
+                        {t.aiSection.title}
                     </h3>
                     <p style={{ fontSize: '1.1rem', maxWidth: '800px', margin: '0 auto' }}>
-                        Uso Claude AI y otras herramientas de IA para acelerar el desarrollo,
-                        optimizar el código y crear soluciones más eficientes.
-                        Esto me permite entregar proyectos de alta calidad en menos tiempo,
-                        sin comprometer la personalización ni el toque humano que tu negocio necesita.
+                        {t.aiSection.description}
                     </p>
                 </motion.div>
             </div>
