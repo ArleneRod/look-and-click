@@ -1,6 +1,8 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { FaRocket, FaBriefcase, FaCrown } from 'react-icons/fa';
+import { useLanguage } from '../context/LanguageContext';
+import translations from '../locales/translations';
 
 const Services = () => {
   const [ref, inView] = useInView({
@@ -8,60 +10,17 @@ const Services = () => {
     threshold: 0.1
   });
 
-  const packages = [
-    {
-      icon: <FaRocket />,
-      name: 'STARTER',
-      price: '€250-400',
-      features: [
-        'Landing page profesional',
-        'Diseño responsive',
-        'Hosting incluido (1 año)',
-        'Formulario de contacto',
-        'Integración redes sociales',
-        '1 mes de soporte gratis',
-        'SEO básico'
-      ],
-      ideal: 'Nuevos emprendedores, profesionales independientes',
-      time: '1-2 semanas',
-      color: '#3b82f6'
-    },
-    {
-      icon: <FaBriefcase />,
-      name: 'BUSINESS',
-      price: '€600-900',
-      features: [
-        'Sitio web multi-página (hasta 5)',
-        'Diseño 100% personalizado',
-        'Galería de productos/servicios',
-        'Blog opcional',
-        'Hosting incluido (1 año)',
-        '3 meses de soporte',
-        'SEO optimizado',
-        'Google Maps integrado'
-      ],
-      ideal: 'Pequeños negocios (restaurantes, spas, tiendas)',
-      time: '2-3 semanas',
-      color: '#10b981',
-      popular: true
-    },
-    {
-      icon: <FaCrown />,
-      name: 'PREMIUM',
-      price: '€1,200-1,800',
-      features: [
-        'E-commerce o funcionalidades avanzadas',
-        'Sistema de reservas/citas',
-        'Todo lo del paquete Business',
-        '6 meses de soporte',
-        'Training personalizado',
-        'Integraciones especiales'
-      ],
-      ideal: 'Negocios establecidos con necesidades específicas',
-      time: '3-4 semanas',
-      color: '#8b5cf6'
-    }
-  ];
+  const { language } = useLanguage();
+  const t = translations[language].services;
+
+  const icons = [<FaRocket />, <FaBriefcase />, <FaCrown />];
+  const colors = ['#3b82f6', '#10b981', '#8b5cf6'];
+
+  const packages = t.packages.map((pkg, index) => ({
+    ...pkg,
+    icon: icons[index],
+    color: colors[index]
+  }));
 
   return (
     <section id="services" style={{ background: 'var(--white)' }}>
@@ -73,9 +32,9 @@ const Services = () => {
           transition={{ duration: 0.8 }}
           style={{ textAlign: 'center', marginBottom: '4rem' }}
         >
-          <h2>Paquetes diseñados para ti</h2>
+          <h2>{t.title}</h2>
           <p style={{ fontSize: '1.2rem', color: 'var(--gray)' }}>
-            Elige el que mejor se adapte a tu negocio
+            {t.subtitle}
           </p>
         </motion.div>
 
@@ -112,7 +71,7 @@ const Services = () => {
                   fontSize: '0.9rem',
                   fontWeight: 'bold'
                 }}>
-                  MÁS POPULAR
+                  {t.popularBadge}
                 </div>
               )}
 
@@ -164,28 +123,28 @@ const Services = () => {
                 marginBottom: '1rem',
                 fontSize: '0.9rem'
               }}>
-                <strong>Ideal para:</strong> {pkg.ideal}
+                <strong>{t.idealFor}</strong> {pkg.ideal}
               </div>
 
-              <div style={{ 
-                color: 'var(--gray)', 
+              <div style={{
+                color: 'var(--gray)',
                 fontSize: '0.9rem',
-                marginBottom: '1.5rem' 
+                marginBottom: '1.5rem'
               }}>
-                ⏱️ Entrega: {pkg.time}
+                ⏱️ {t.delivery} {pkg.time}
               </div>
 
-              <a 
-                href="#contact" 
+              <a
+                href="#contact"
                 className="btn btn-primary"
-                style={{ 
-                  width: '100%', 
+                style={{
+                  width: '100%',
                   textAlign: 'center',
                   background: pkg.color,
                   border: 'none'
                 }}
               >
-                Empezar
+                {t.startButton}
               </a>
             </motion.div>
           ))}
@@ -195,40 +154,30 @@ const Services = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ delay: 0.8, duration: 0.8 }}
-          style={{ 
-            marginTop: '4rem', 
+          style={{
+            marginTop: '4rem',
             textAlign: 'center',
             padding: '2rem',
             background: 'var(--light)',
             borderRadius: '15px'
           }}
         >
-          <h3>Servicios Adicionales</h3>
-          <div style={{ 
-            display: 'flex', 
-            justifyContent: 'space-around', 
+          <h3>{t.additionalServices.title}</h3>
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-around',
             flexWrap: 'wrap',
             gap: '2rem',
             marginTop: '1.5rem'
           }}>
-            <div>
-              <strong>Mantenimiento web</strong>
-              <p style={{ color: 'var(--primary)', fontSize: '1.3rem', margin: '0.5rem 0' }}>
-                €30-50/mes
-              </p>
-            </div>
-            <div>
-              <strong>Gestión redes sociales</strong>
-              <p style={{ color: 'var(--primary)', fontSize: '1.3rem', margin: '0.5rem 0' }}>
-                €80-150/mes
-              </p>
-            </div>
-            <div>
-              <strong>Updates de contenido</strong>
-              <p style={{ color: 'var(--primary)', fontSize: '1.3rem', margin: '0.5rem 0' }}>
-                €40/mes
-              </p>
-            </div>
+            {t.additionalServices.items.map((item, index) => (
+              <div key={index}>
+                <strong>{item.name}</strong>
+                <p style={{ color: 'var(--primary)', fontSize: '1.3rem', margin: '0.5rem 0' }}>
+                  {item.price}
+                </p>
+              </div>
+            ))}
           </div>
         </motion.div>
       </div>

@@ -1,6 +1,11 @@
 import { FaInstagram, FaFacebook, FaLinkedin, FaHeart } from 'react-icons/fa';
+import { useLanguage } from '../context/LanguageContext';
+import translations from '../locales/translations';
 
 const Footer = () => {
+  const { language } = useLanguage();
+  const t = translations[language].footer;
+
   return (
     <footer style={{
       background: 'var(--dark)',
@@ -17,7 +22,7 @@ const Footer = () => {
           <div>
             <h3 style={{ marginBottom: '1rem', color: 'white' }}>Look & Click</h3>
             <p style={{ color: '#94a3b8' }}>
-              Tu negocio online, hecho simple.
+              {t.tagline}
             </p>
             <div style={{ 
               display: 'flex', 
@@ -59,25 +64,18 @@ const Footer = () => {
           </div>
 
           <div>
-            <h4 style={{ marginBottom: '1rem', color: 'white' }}>Navegación</h4>
+            <h4 style={{ marginBottom: '1rem', color: 'white' }}>{t.navigation.title}</h4>
             <ul style={{ listStyle: 'none' }}>
-              <li style={{ marginBottom: '0.5rem' }}>
-                <a href="#about" style={{ color: '#94a3b8', textDecoration: 'none' }}>Sobre mí</a>
-              </li>
-              <li style={{ marginBottom: '0.5rem' }}>
-                <a href="#services" style={{ color: '#94a3b8', textDecoration: 'none' }}>Servicios</a>
-              </li>
-              <li style={{ marginBottom: '0.5rem' }}>
-                <a href="#process" style={{ color: '#94a3b8', textDecoration: 'none' }}>Proceso</a>
-              </li>
-              <li style={{ marginBottom: '0.5rem' }}>
-                <a href="#contact" style={{ color: '#94a3b8', textDecoration: 'none' }}>Contacto</a>
-              </li>
+              {t.navigation.items.map((item, index) => (
+                <li key={index} style={{ marginBottom: '0.5rem' }}>
+                  <a href={item.href} style={{ color: '#94a3b8', textDecoration: 'none' }}>{item.label}</a>
+                </li>
+              ))}
             </ul>
           </div>
 
           <div>
-            <h4 style={{ marginBottom: '1rem', color: 'white' }}>Contacto</h4>
+            <h4 style={{ marginBottom: '1rem', color: 'white' }}>{t.contactTitle}</h4>
             <p style={{ color: '#94a3b8', marginBottom: '0.5rem' }}>
               📧 tu-email@ejemplo.com
             </p>
@@ -96,14 +94,14 @@ const Footer = () => {
           textAlign: 'center',
           color: '#94a3b8'
         }}>
-          <p style={{ 
-            display: 'flex', 
-            alignItems: 'center', 
+          <p style={{
+            display: 'flex',
+            alignItems: 'center',
             justifyContent: 'center',
             gap: '0.5rem',
             flexWrap: 'wrap'
           }}>
-            © 2024 Look & Click. Todos los derechos reservados. Hecho con <FaHeart style={{ color: '#ef4444' }} /> en Holanda
+            © 2024 Look & Click. {t.copyright} <FaHeart style={{ color: '#ef4444' }} /> {t.location}
           </p>
         </div>
       </div>

@@ -1,10 +1,15 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { useLanguage } from '../context/LanguageContext';
+import translations from '../locales/translations';
 import '../styles/header.css';
 
 function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { language, toggleLanguage } = useLanguage();
+
+  const t = translations[language];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -15,14 +20,7 @@ function Header() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const menuItems = [
-    { label: 'Inicio', href: '#hero' },
-    { label: 'Ejemplos', href: '#examples' },
-    { label: 'Servicios', href: '#services' },
-    { label: 'Proceso', href: '#process' },
-    { label: 'FAQ', href: '#faq' },
-    { label: 'Nosotros', href: '#about' }
-  ];
+  const menuItems = t.header.menuItems;
 
   const handleMenuClick = () => {
     setIsMobileMenuOpen(false);
@@ -97,9 +95,37 @@ function Header() {
                 className="cta-button"
                 onClick={(e) => scrollToSection(e, '#contact')}
             >
-              Empezar proyecto
+              {t.header.cta}
             </a>
           </motion.div>
+
+          <motion.button
+              className="language-toggle"
+              onClick={toggleLanguage}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.7, duration: 0.5 }}
+              aria-label="Toggle language"
+              style={{
+                background: 'transparent',
+                border: '2px solid var(--primary)',
+                borderRadius: '8px',
+                padding: '0.5rem 1rem',
+                fontSize: '1rem',
+                fontWeight: 'bold',
+                color: 'var(--primary)',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                marginLeft: '1rem'
+              }}
+          >
+            <span style={{ fontSize: '1.2rem' }}>🌐</span>
+            {language === 'es' ? 'EN' : 'ES'}
+          </motion.button>
 
           <button
               className={`mobile-menu-btn ${isMobileMenuOpen ? 'active' : ''}`}

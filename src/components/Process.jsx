@@ -1,6 +1,8 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { FaPhone, FaPaintBrush, FaRocket, FaHeadset } from 'react-icons/fa';
+import { useLanguage } from '../context/LanguageContext';
+import translations from '../locales/translations';
 
 const Process = () => {
   const [ref, inView] = useInView({
@@ -8,36 +10,17 @@ const Process = () => {
     threshold: 0.1
   });
 
-  const steps = [
-    {
-      icon: <FaPhone />,
-      title: 'Conversemos',
-      subtitle: 'Gratis',
-      description: 'Llamada de 30 min por Zoom. Hablamos de tu negocio, tus necesidades y tu presupuesto',
-      color: '#3b82f6'
-    },
-    {
-      icon: <FaPaintBrush />,
-      title: 'Diseño y desarrollo',
-      subtitle: 'Colaborativo',
-      description: 'Te muestro avances, ajustamos juntos. Siempre en contacto por WhatsApp/email',
-      color: '#10b981'
-    },
-    {
-      icon: <FaRocket />,
-      title: 'Lanzamiento',
-      subtitle: 'Tu página online',
-      description: 'Tu página online y funcionando. Training incluido para que sepas manejarla',
-      color: '#f59e0b'
-    },
-    {
-      icon: <FaHeadset />,
-      title: 'Soporte continuo',
-      subtitle: 'Siempre disponible',
-      description: 'No te dejo solo después de entregar. Soporte incluido según tu paquete',
-      color: '#8b5cf6'
-    }
-  ];
+  const { language } = useLanguage();
+  const t = translations[language].process;
+
+  const icons = [<FaPhone />, <FaPaintBrush />, <FaRocket />, <FaHeadset />];
+  const colors = ['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6'];
+
+  const steps = t.steps.map((step, index) => ({
+    ...step,
+    icon: icons[index],
+    color: colors[index]
+  }));
 
   return (
     <section id="process" style={{ background: 'var(--light)' }}>
@@ -49,9 +32,9 @@ const Process = () => {
           transition={{ duration: 0.8 }}
           style={{ textAlign: 'center', marginBottom: '4rem' }}
         >
-          <h2>Simple y sin complicaciones</h2>
+          <h2>{t.title}</h2>
           <p style={{ fontSize: '1.2rem', color: 'var(--gray)' }}>
-            Así trabajamos juntos
+            {t.subtitle}
           </p>
         </motion.div>
 

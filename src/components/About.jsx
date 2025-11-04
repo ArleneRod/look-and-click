@@ -1,11 +1,16 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
+import { useLanguage } from '../context/LanguageContext';
+import translations from '../locales/translations';
 
 const About = () => {
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1
   });
+
+  const { language } = useLanguage();
+  const t = translations[language].about;
 
   return (
     <section id="about" style={{ background: 'var(--light)' }}>
@@ -15,11 +20,11 @@ const About = () => {
           initial={{ opacity: 0, y: 50 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8 }}
-          style={{ 
-            display: 'grid', 
-            gridTemplateColumns: '1fr 1fr', 
-            gap: '4rem', 
-            alignItems: 'center' 
+          style={{
+            display: 'grid',
+            gridTemplateColumns: '1fr 1fr',
+            gap: '4rem',
+            alignItems: 'center'
           }}
         >
           <div>
@@ -40,7 +45,7 @@ const About = () => {
                 fontWeight: 'bold'
               }}
             >
-              TU FOTO
+              {t.photoPlaceholder}
             </motion.div>
           </div>
 
@@ -50,37 +55,20 @@ const About = () => {
               animate={inView ? { opacity: 1, x: 0 } : {}}
               transition={{ delay: 0.3, duration: 0.8 }}
             >
-              Hola, soy [Tu nombre]
+              {t.title}
             </motion.h2>
-            
-            <motion.p
-              initial={{ opacity: 0, x: 50 }}
-              animate={inView ? { opacity: 1, x: 0 } : {}}
-              transition={{ delay: 0.4, duration: 0.8 }}
-              style={{ fontSize: '1.1rem', color: 'var(--gray)', marginBottom: '1rem' }}
-            >
-              Soy latina viviendo en Holanda. Entiendo los desafíos de emprender en un país nuevo. 
-              Por eso creé Look & Click: para ayudar a otros latinos a dar ese paso digital sin complicaciones.
-            </motion.p>
-            
-            <motion.p
-              initial={{ opacity: 0, x: 50 }}
-              animate={inView ? { opacity: 1, x: 0 } : {}}
-              transition={{ delay: 0.5, duration: 0.8 }}
-              style={{ fontSize: '1.1rem', color: 'var(--gray)', marginBottom: '1rem' }}
-            >
-              Como desarrolladora web, combino diseño moderno con funcionalidad real. Mi objetivo es simple: 
-              que tu página web te ayude a crecer, no que sea solo algo bonito que nadie ve.
-            </motion.p>
-            
-            <motion.p
-              initial={{ opacity: 0, x: 50 }}
-              animate={inView ? { opacity: 1, x: 0 } : {}}
-              transition={{ delay: 0.6, duration: 0.8 }}
-              style={{ fontSize: '1.1rem', color: 'var(--gray)' }}
-            >
-              Trabajo en español e inglés, entiendo tu visión, y hago que el proceso sea fácil y transparente.
-            </motion.p>
+
+            {t.paragraphs.map((paragraph, index) => (
+              <motion.p
+                key={index}
+                initial={{ opacity: 0, x: 50 }}
+                animate={inView ? { opacity: 1, x: 0 } : {}}
+                transition={{ delay: 0.4 + index * 0.1, duration: 0.8 }}
+                style={{ fontSize: '1.1rem', color: 'var(--gray)', marginBottom: index < t.paragraphs.length - 1 ? '1rem' : '0' }}
+              >
+                {paragraph}
+              </motion.p>
+            ))}
           </div>
         </motion.div>
       </div>

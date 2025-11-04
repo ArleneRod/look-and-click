@@ -2,6 +2,8 @@ import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { useState } from 'react';
 import { FaChevronDown } from 'react-icons/fa';
+import { useLanguage } from '../context/LanguageContext';
+import translations from '../locales/translations';
 
 const FAQ = () => {
   const [ref, inView] = useInView({
@@ -11,40 +13,8 @@ const FAQ = () => {
 
   const [openIndex, setOpenIndex] = useState(null);
 
-  const faqs = [
-    {
-      question: '¿Cuánto tiempo toma hacer mi página?',
-      answer: 'Dependiendo del paquete: 1-4 semanas desde el pago del anticipo.'
-    },
-    {
-      question: '¿Necesito conocimientos técnicos?',
-      answer: 'No. Te enseño todo lo que necesitas saber para manejar tu página.'
-    },
-    {
-      question: '¿Qué pasa después de que esté lista mi página?',
-      answer: 'Tienes soporte incluido según tu paquete. Después puedes contratar mantenimiento mensual o manejarlo tú.'
-    },
-    {
-      question: '¿Incluye hosting?',
-      answer: 'Sí, todos los paquetes incluyen hosting por 1 año.'
-    },
-    {
-      question: '¿Puedo hacer cambios después?',
-      answer: 'Las primeras 2-3 rondas de cambios están incluidas. Cambios adicionales se cobran aparte.'
-    },
-    {
-      question: '¿Trabajas solo con latinos?',
-      answer: 'Principalmente, pero trabajo con cualquier emprendedor que necesite una página web profesional.'
-    },
-    {
-      question: '¿Cómo es el pago?',
-      answer: '50% anticipo para empezar, 50% al entregar el proyecto.'
-    },
-    {
-      question: '¿Nos vemos en persona?',
-      answer: 'Trabajo principalmente por Zoom, pero puedo reunirme en persona si es necesario (depende de ubicación).'
-    }
-  ];
+  const { language } = useLanguage();
+  const t = translations[language].faq;
 
   return (
     <section id="faq" style={{ background: 'var(--light)' }}>
@@ -56,14 +26,14 @@ const FAQ = () => {
           transition={{ duration: 0.8 }}
           style={{ textAlign: 'center', marginBottom: '4rem' }}
         >
-          <h2>Preguntas frecuentes</h2>
+          <h2>{t.title}</h2>
           <p style={{ fontSize: '1.2rem', color: 'var(--gray)' }}>
-            Todo lo que necesitas saber
+            {t.subtitle}
           </p>
         </motion.div>
 
         <div>
-          {faqs.map((faq, index) => (
+          {t.questions.map((faq, index) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, y: 20 }}

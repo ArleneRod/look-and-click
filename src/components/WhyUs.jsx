@@ -1,6 +1,8 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { FaLanguage, FaDollarSign, FaPalette, FaHandshake, FaGlobe, FaCode } from 'react-icons/fa';
+import { useLanguage } from '../context/LanguageContext';
+import translations from '../locales/translations';
 
 const WhyUs = () => {
   const [ref, inView] = useInView({
@@ -8,44 +10,17 @@ const WhyUs = () => {
     threshold: 0.1
   });
 
-  const reasons = [
-    {
-      icon: <FaLanguage />,
-      title: 'Hablo tu idioma',
-      description: 'Trabajo en español e inglés, entiendo tu cultura',
-      color: '#3b82f6'
-    },
-    {
-      icon: <FaDollarSign />,
-      title: 'Precios justos',
-      description: 'Sin sorpresas, sin costos ocultos',
-      color: '#10b981'
-    },
-    {
-      icon: <FaPalette />,
-      title: 'Diseño personalizado',
-      description: 'No uso templates genéricos, cada proyecto es único',
-      color: '#f59e0b'
-    },
-    {
-      icon: <FaHandshake />,
-      title: 'Soporte real',
-      description: 'Respondo tus preguntas, aunque el proyecto ya esté terminado',
-      color: '#8b5cf6'
-    },
-    {
-      icon: <FaGlobe />,
-      title: 'Entiendo a los expats',
-      description: 'Sé lo que es emprender en un país nuevo',
-      color: '#ec4899'
-    },
-    {
-      icon: <FaCode />,
-      title: 'Tecnología moderna',
-      description: 'React, diseño responsive, optimizado para Google',
-      color: '#06b6d4'
-    }
-  ];
+  const { language } = useLanguage();
+  const t = translations[language].whyUs;
+
+  const icons = [<FaLanguage />, <FaDollarSign />, <FaPalette />, <FaHandshake />, <FaGlobe />, <FaCode />];
+  const colors = ['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899', '#06b6d4'];
+
+  const reasons = t.reasons.map((reason, index) => ({
+    ...reason,
+    icon: icons[index],
+    color: colors[index]
+  }));
 
   return (
     <section id="why-us" style={{ background: 'var(--white)' }}>
@@ -57,9 +32,9 @@ const WhyUs = () => {
           transition={{ duration: 0.8 }}
           style={{ textAlign: 'center', marginBottom: '4rem' }}
         >
-          <h2>¿Por qué Look & Click?</h2>
+          <h2>{t.title}</h2>
           <p style={{ fontSize: '1.2rem', color: 'var(--gray)' }}>
-            Lo que nos hace diferentes
+            {t.subtitle}
           </p>
         </motion.div>
 

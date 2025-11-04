@@ -1,7 +1,12 @@
 import { motion } from 'framer-motion';
 import { FaArrowDown } from 'react-icons/fa';
+import { useLanguage } from '../context/LanguageContext';
+import translations from '../locales/translations';
 
 const Hero = () => {
+  const { language } = useLanguage();
+  const t = translations[language].hero;
+
   return (
     <section id="hero" style={{
       background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
@@ -28,7 +33,7 @@ const Hero = () => {
             textShadow: '2px 2px 4px rgba(0,0,0,0.3)'
           }}
         >
-          LOOK&CLICK
+          {t.brand}
         </motion.div>
 
         <motion.h1
@@ -37,26 +42,26 @@ const Hero = () => {
           transition={{ delay: 0.3, duration: 0.8 }}
           style={{ fontSize: '2rem', marginBottom: '1.5rem' }}
         >
-          Tu negocio merece brillar online
+          {t.title}
         </motion.h1>
-        
+
         <motion.p
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4, duration: 0.8 }}
           style={{ fontSize: '1.3rem', marginBottom: '2rem', maxWidth: '700px', margin: '0 auto 2rem' }}
         >
-          Páginas web profesionales para emprendedores latinos en Holanda. Desde €250.
+          {t.subtitle}
         </motion.p>
-        
+
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6, duration: 0.8 }}
           style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}
         >
-          <a href="#services" className="btn btn-primary">Ver Paquetes</a>
-          <a href="#contact" className="btn btn-outline">Contactar</a>
+          <a href="#services" className="btn btn-primary">{t.ctaPrimary}</a>
+          <a href="#contact" className="btn btn-outline">{t.ctaSecondary}</a>
         </motion.div>
 
         <motion.div
