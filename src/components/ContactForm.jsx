@@ -3,6 +3,8 @@ import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import emailjs from '@emailjs/browser';
 import { FaUser, FaEnvelope, FaPhone, FaCommentDots, FaPaperPlane } from 'react-icons/fa';
+import { useLanguage } from '../context/LanguageContext';
+import translations from '../locales/translations';
 import '../styles/contactForm.css';
 
 const ContactForm = () => {
@@ -10,6 +12,9 @@ const ContactForm = () => {
     triggerOnce: true,
     threshold: 0.1
   });
+
+  const { language } = useLanguage();
+  const t = translations[language].contact;
 
   const formRef = useRef();
   const [formData, setFormData] = useState({
@@ -58,7 +63,7 @@ const ContactForm = () => {
         loading: false,
         success: true,
         error: false,
-        message: '¡Mensaje enviado con éxito! Te contactaremos pronto.'
+        message: t.form.successMessage
       });
 
       // Limpiar formulario
@@ -80,7 +85,7 @@ const ContactForm = () => {
         loading: false,
         success: false,
         error: true,
-        message: 'Hubo un error al enviar el mensaje. Por favor, intenta de nuevo o contáctanos por WhatsApp.'
+        message: t.form.errorMessage
       });
 
       // Limpiar mensaje de error después de 5 segundos
@@ -100,9 +105,9 @@ const ContactForm = () => {
           transition={{ duration: 0.8 }}
           className="contact-header"
         >
-          <h2>¿Listo para comenzar tu proyecto?</h2>
+          <h2>{t.title}</h2>
           <p>
-            Completa el formulario y te responderemos en menos de 24 horas
+            {t.subtitle}
           </p>
         </motion.div>
 
@@ -113,17 +118,16 @@ const ContactForm = () => {
             transition={{ delay: 0.2, duration: 0.8 }}
             className="contact-info"
           >
-            <h3>Hablemos de tu proyecto</h3>
+            <h3>{t.infoTitle}</h3>
             <p>
-              No importa si estás empezando o si ya tienes tu negocio establecido.
-              Estoy aquí para ayudarte a dar ese paso digital.
+              {t.infoDescription}
             </p>
 
             <div className="contact-methods">
               <div className="contact-method">
                 <FaEnvelope className="method-icon" />
                 <div>
-                  <h4>Email</h4>
+                  <h4>{t.email}</h4>
                   <a href="mailto:tu-email@ejemplo.com">tu-email@ejemplo.com</a>
                 </div>
               </div>
@@ -131,27 +135,27 @@ const ContactForm = () => {
               <div className="contact-method">
                 <FaPhone className="method-icon" />
                 <div>
-                  <h4>Teléfono / WhatsApp</h4>
+                  <h4>{t.phone}</h4>
                   <a href="tel:+31XXXXXXXXX">+31 X XX XXX XXXX</a>
                 </div>
               </div>
             </div>
 
             <div className="quick-links">
-              <h4>También puedes:</h4>
+              <h4>{t.quickLinks.title}</h4>
               <a
                 href="https://wa.me/31XXXXXXXXX"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="whatsapp-link"
               >
-                Enviar WhatsApp directo
+                {t.quickLinks.whatsapp}
               </a>
               <a
                 href="#services"
                 className="services-link"
               >
-                Ver paquetes y precios
+                {t.quickLinks.services}
               </a>
             </div>
           </motion.div>
@@ -165,7 +169,7 @@ const ContactForm = () => {
             <form ref={formRef} onSubmit={handleSubmit} className="contact-form">
               <div className="form-group">
                 <label htmlFor="name">
-                  <FaUser /> Nombre completo *
+                  <FaUser /> {t.form.name}
                 </label>
                 <input
                   type="text"
@@ -174,13 +178,13 @@ const ContactForm = () => {
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  placeholder="Tu nombre"
+                  placeholder={t.form.namePlaceholder}
                 />
               </div>
 
               <div className="form-group">
                 <label htmlFor="email">
-                  <FaEnvelope /> Email *
+                  <FaEnvelope /> {t.form.email}
                 </label>
                 <input
                   type="email"
@@ -189,13 +193,13 @@ const ContactForm = () => {
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  placeholder="tu@email.com"
+                  placeholder={t.form.emailPlaceholder}
                 />
               </div>
 
               <div className="form-group">
                 <label htmlFor="phone">
-                  <FaPhone /> Teléfono
+                  <FaPhone /> {t.form.phone}
                 </label>
                 <input
                   type="tel"
@@ -203,13 +207,13 @@ const ContactForm = () => {
                   name="phone"
                   value={formData.phone}
                   onChange={handleChange}
-                  placeholder="+31 X XX XXX XXXX"
+                  placeholder={t.form.phonePlaceholder}
                 />
               </div>
 
               <div className="form-group">
                 <label htmlFor="message">
-                  <FaCommentDots /> Cuéntame sobre tu proyecto *
+                  <FaCommentDots /> {t.form.message}
                 </label>
                 <textarea
                   id="message"
@@ -218,7 +222,7 @@ const ContactForm = () => {
                   onChange={handleChange}
                   required
                   rows="6"
-                  placeholder="Describe brevemente tu negocio, qué necesitas y cualquier detalle que creas importante..."
+                  placeholder={t.form.messagePlaceholder}
                 ></textarea>
               </div>
 
@@ -230,12 +234,12 @@ const ContactForm = () => {
                 {formStatus.loading ? (
                   <>
                     <span className="spinner"></span>
-                    Enviando...
+                    {t.form.sending}
                   </>
                 ) : (
                   <>
                     <FaPaperPlane />
-                    Enviar mensaje
+                    {t.form.submitButton}
                   </>
                 )}
               </button>
